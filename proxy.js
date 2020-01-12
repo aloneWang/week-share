@@ -33,11 +33,11 @@ function watch(obj) {
     const handler = {
         get(target, prop) {
             console.log("get")
-            return target[prop]
+            return Reflect.get(target,prop)
         },
         set(target, prop, v) {
             console.log('set')
-            target[prop] = v
+            Reflect.set(target,prop,v)
         }
     }
     return new Proxy(obj,handler)

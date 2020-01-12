@@ -18,7 +18,36 @@ Proxy 对象用于定义自定义行为（如属性查找、赋值、枚举、�
  p.a = 1
  p.b = undefined
  console.log(p.a, p.b,p.c)
-```    
+``` 
+
+## 其他traps
+```
+handler.get
+
+handler.set
+
+handler.has
+
+handler.apply
+
+handler.construct
+
+handler.ownKeys
+
+handler.deleteProperty
+
+handler.defineProperty
+
+handler.isExtensible
+
+handler.preventExtensions
+
+handler.getPrototypeOf
+
+handler.setPrototypeOf
+
+handler.getOwnPropertyDescriptor
+```
 #### 转发代理
 ```
     let target = {}
@@ -26,3 +55,7 @@ Proxy 对象用于定义自定义行为（如属性查找、赋值、枚举、�
     p.a = 37
     console.log(target.a)   // 37
 ```
+### 与 Object.defineProperty 对比
++ proxy 劫持的是整个对象
++ proxy 捕获的对象的行为多达13种，不限于apply、ownKeys、deleteProperty、has等等是Object.defineProperty不具备的。
++ proxy 兼容性不怎么好
