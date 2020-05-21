@@ -43,3 +43,5 @@ function watch(obj) {
     return new Proxy(obj,handler)
     //return obj
 }
+
+// proxy 实现高性能深拷贝

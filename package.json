@@ -1,0 +1,23 @@
+{
+  "name": "week-share",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aloneWang/week-share.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aloneWang/week-share/issues"
+  },
+  "homepage": "https://github.com/aloneWang/week-share#readme"
+}

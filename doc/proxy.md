@@ -55,6 +55,10 @@ handler.getOwnPropertyDescriptor
     p.a = 37
     console.log(target.a)   // 37
 ```
+
+### 使用 proxy 实现高性能深拷贝
+原理：只有当值被修改时候，执行一次拷贝
+
 ### 与 Object.defineProperty 对比
 + proxy 劫持的是整个对象
 + proxy 捕获的对象的行为多达13种，不限于apply、ownKeys、deleteProperty、has等等是Object.defineProperty不具备的。
