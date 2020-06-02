@@ -27,6 +27,8 @@
  * @param {string} s
  * @return {number}
  */
+
+// 递归（呆逼版）
 var lengthOfLongestSubstring = function(s) {
   let a = 0 // 当前遍历的下标
   let barr = ''  // 记录最长子串
@@ -48,3 +50,20 @@ var lengthOfLongestSubstring = function(s) {
   return searchlongStr()
   
 };
+
+// 精简版(滑块)
+var lengthOfLongestSubstring = function(s) {
+  // 
+  let str = ''  // 滑块
+  let b = 0   //最长字符个数
+  for(var i =0; i < s.length; i++) {
+    if(!str.includes(s[i])) {
+      str+= s[i]
+    }else {
+      b = str.length > b ? str.length : b
+      let c = str.indexOf(s[i])
+      str = str.slice(c+1, i) + s[i]
+    }
+  }
+  return b > str.length ? b : str.length
+}
