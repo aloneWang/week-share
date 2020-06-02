@@ -90,13 +90,16 @@ export default {
           const keys = this.columns1.map( it => it.key)
           const thead = this.columns1.map( it => it.title)
           const data = this.data1.map( it => {
-              let _data = []
-              for(let i in it) {
-                if(keys.includes(i)) {
-                  _data.push(it[i])
-                }
-              }
-              return _data
+              // let _data = []
+              // for(let i in it) {
+              //   if(keys.includes(i)) {
+              //     _data.push(it[i])
+              //   }
+              // }
+              // return _data
+              return keys.map( key => {
+                return it[key]
+              })
           })
           console.log([thead, ...data])
           const sheet = XLSX.utils.aoa_to_sheet([thead, ...data])
