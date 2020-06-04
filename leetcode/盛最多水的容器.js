@@ -10,9 +10,13 @@
 var maxArea = function(height) {
   let s = 0  // 最大面积
   for(var i =0; i< height.length -1; i++) {
-      for(var j=i+1; j < height.length; j ++) {
-          let slayer = (j -i ) * (height[i] < height[j] ? height[i] : height[j])
-           s = s > slayer ? s: slayer
+      let maxY = 0
+      for(var j=height.length -1; j > i; j --) {
+          if(height[j] > maxY) {
+              let slayer = (j -i) * (height[j] < height[i] ? height[j] : height[i])
+              s = s > slayer ? s: slayer
+              maxY = height[j]
+          }
       }
   }
   return s
