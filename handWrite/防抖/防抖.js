@@ -21,10 +21,10 @@ Node.onclick = debounce(function() {
   console.log(this)
 },1000)
 
-// 立即执行， 事件对象参数
+// 立即执行， 事件对象参数, 增加返回值
 var debounce = function(fun,delay, immedia) {
-  let timer
-  return function() {
+  let timer, result
+  let _debounce = function() {
     const args = arguments
     const context = this
     // 定时器没结束，清除
@@ -34,16 +34,25 @@ var debounce = function(fun,delay, immedia) {
     // 立即执行
     if(immedia) {
       if(!timer) {
-        fun.apply(context, args)
+        result = fun.apply(context, args)
       }
       timer = setTimeout( () => timer = null, delay)
 
     }else {
-      setTimeout(()=> {
+      timer = setTimeout(()=> {
         // 绑定 上下文
         timer = null
         fun.apply(context, args)
       },delay)
     }
+    return result
   }
+  // 取消
+  _debounce.cancel = function() {
+    timer = null
+    clearTimeout(timer)
+  }
+  return _debounce
 }
+
+// 增加取消 节流
