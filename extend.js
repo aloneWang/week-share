@@ -5,7 +5,7 @@ var Person = function(name) {
 Person.prototype.say = 11
 // var Boy = Function 继承 Peroson
 var extend = function(sup, base) {
-    base.prototype = sup.prototype
+    base.prototype = new sup()
     base.prototype.constructor = base
     return base
 }
