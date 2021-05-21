@@ -303,6 +303,11 @@ function insert (parent, elm, ref$$1) {
 就是一个原生插入dom的过程
 
 ## 总结
-所以，patch 操作就是把 `vnode` -> 转成 真是`dom`, 在ptach 操作中 parentEle 变化 过程
+所以，patch 操作就是把 `vnode` -> 转成 真是`dom`, 
+`转成 真实dom的前提是` <font color=red size=4>这个vnode已经变成普通的vnode</font>,
+对存在的children 属性也进行次 `createEle`遍历（把每个普通vnode变成真实dom）
+而对于<font size=4 color=red>组件类型 vnode</font> 则实例化他们，
+
+在ptach 操作中 parentEle 变化 过程
 从一开始 的 ` #app` <- app.vue组件 的 第一个 dom <- 每个子组件 的 第一个 dom, 
 因为 patch 是 自下而上的 所以 最后一步是插入模板（index.html）`div#app` dom元素上 
