@@ -24,8 +24,6 @@ var trap = function (height) {
                 if(height[r]  >= height[RmaxIdx]) {
                     RmaxIdx = r
                     if(height[r] >= height[l]) {
-                        // l = r
-                        // r =l+1
                         break
                     }
                 }
