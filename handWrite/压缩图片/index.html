@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="../statics/event-flow.png" alt="" id='img'>
+    <script type="text/javascript">
+        function compressImg(options) {
+            var img = options.img, _a = options.quality, quality = _a === void 0 ? 0.8 : _a, _b = options.sizeRate, sizeRate = _b === void 0 ? 1 : _b;
+            var imgDom;
+            var setStyle = function (dom, canvas) {
+                var width = dom.width, height = dom.height;
+                canvas.height = height * sizeRate;
+                canvas.width = width * sizeRate;
+            };
+            return new Promise(function (res, rej) {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                var resolveImg = function (ctx, imgDom, canvas, quality, res) {
+                    ctx.drawImage(imgDom, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(function (blob) {
+                        res(blob);
+                    }, 'image/jpeg', quality);
+                };
+                // blob 对象
+                if (img instanceof Blob) {
+                    imgDom = new Image;
+                    // URL.createObjectURL 创建 的 URL 对象 及时 清除
+                    // 返回dataUrl 的生命周期 和窗口关联， 窗口关闭或者刷新 dataUrl 失效
+                    imgDom.src = URL.createObjectURL(img);
+                    imgDom.onload = function () {
+                        setStyle(imgDom, canvas);
+                        //优化内存 主动清除 dataUrl 对象， 生命周期即销毁， 访问失效
+                        // 所以在 onload (加载完)清除, 不影响 drawImage, 因为image 元素已经 render 完了
+                        URL.revokeObjectURL(imgDom.src);
+                        resolveImg(ctx, imgDom, canvas, quality, res);
+                    };
+                }
+                else {
+                    imgDom = img;
+                    imgDom.crossOrigin = "Anonymous"
+                    setStyle(imgDom, canvas);
+                    resolveImg(ctx, imgDom, canvas, quality, res);
+                }
+
+            });
+        }
+        function renderImg() {
+            const input = document.createElement('input')
+            input.type = 'file'
+            input.onchange = function (e) {
+                file = e.target.files[0]
+                console.log(file)
+                compressImg({ img: file, sizeRate: 0.8 }).then(v => {
+                    dataUrl = URL.createObjectURL(v)
+                    img = new Image
+                    img.src = dataUrl
+                    document.body.appendChild(img)
+                    console.log(v)
+                })
+            }
+            document.body.appendChild(input)
+            var domImg = document.getElementById('img')
+            // 图片 跨域 执行 drawImage 会 污染画布， 执行 toBlob 会报错
+            compressImg({ img: domImg, sizeRate: 0.8 }).then(v => {
+                console.log(v)
+                const dataUrl = URL.createObjectURL(v)
+                img = new Image
+                img.src = dataUrl
+                document.body.appendChild(img)
+                console.log(v)
+            })
+        }
+        window.onload = function () {
+            renderImg()
+        }
+    </script>
+</body>
+
+</html>
