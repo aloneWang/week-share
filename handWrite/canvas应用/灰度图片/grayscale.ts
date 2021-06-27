@@ -23,6 +23,35 @@ const invert = function(data: ImageData):void {
 const originImg = function(ctx:CanvasRenderingContext2D):void {
     ctx.drawImage(imgDom, 0, 0, canvas.width, canvas.height)
 }
+
+const magnifier = function(canvas:HTMLCanvasElement) {
+    const magniPanel = document.createElement('canvas')
+    const WIDTH = 400
+    const HEIGHT = 200
+    magniPanel.width = WIDTH
+    magniPanel.height = HEIGHT
+    document.body.append(magniPanel)
+    
+    const ctx = magniPanel.getContext('2d')
+    ctx.imageSmoothingEnabled = true
+    let listener = function(e:MouseEvent) {
+        const {offsetX, offsetY} = e
+
+        const
+            swidth = WIDTH / 2,
+            sheight = HEIGHT / 2,
+            sMaxX = this.width - swidth,
+            sMaxY = this.height - sheight,
+
+            x = offsetX < swidth/2  ? 0 : offsetX > (sMaxX + swidth/2) ? sMaxX : offsetX - swidth/2 ,
+            y = offsetY < sheight/2 ? 0 : offsetY > (sMaxY + sheight/2) ? sMaxY : offsetY - sheight/2
+
+        ctx.drawImage(canvas,x, y, swidth, sheight, 0, 0, WIDTH, HEIGHT)
+
+    }
+    canvas.addEventListener('mousemove',listener)
+}
+
 const GRAYSCALE = 'grayscale'
 const INVERT = 'invert'
 const ORIGIN = 'origin'
@@ -64,6 +93,7 @@ const createInput = function() {
     }
 }
 const init = function() {
+    magnifier(canvas)
     const options = [GRAYSCALE, INVERT, ORIGIN] as const
     const radio = document.createElement('div')
     createInput()
@@ -73,6 +103,7 @@ const init = function() {
         box.innerHTML = `<input type="radio" value=${name} name="box" onchange="mutationImg('${name}')" /> ${name}`
         radio.appendChild(box)
     })
+    
     panel.appendChild(radio)
     panel.append(canvas)
 
@@ -85,6 +116,8 @@ const drawImg = function(imgFile:File):HTMLCanvasElement {
     const ctx = canvas.getContext('2d')
     imgDom.onload = function() {
         URL.revokeObjectURL(dataUrl)
+        canvas.width = imgDom.width
+        canvas.height = imgDom.height
         ctx.drawImage(imgDom, 0,0,canvas.width, canvas.height)
         
     }
@@ -92,8 +125,8 @@ const drawImg = function(imgFile:File):HTMLCanvasElement {
     return canvas
 }
 init()
-export default {
-    drawImg,
-    mutationImg,
-}
+// export default {
+//     drawImg,
+//     mutationImg,
+// }
 
